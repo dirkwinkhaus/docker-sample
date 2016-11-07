@@ -1,9 +1,6 @@
 {
-    "name": "dirk/docker-project",
+    "name": "widi/docker-sample",
     "require": {
-        "doctrine/orm": "~2.5",
-        "symfony/symfony": "~2.7",
-        "symfony/console": "~2.7"
     },
     "authors": [
         {

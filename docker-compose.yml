@@ -1,0 +1,50 @@
+websiteDataVolume:
+  image: myown/ubuntu
+  volumes:
+    - ./src:/var/www/html
+
+sharedDataVolume:
+  image: myown/ubuntu
+  volumes:
+    - ./docker/sharedData:/sharedData/
+
+webServerMachine:
+  image: myown/nginx
+  ports:
+    - "8000:80"
+
+  links:
+   - phpMachine:docker-web.local
+
+  volumes:
+   - ./config/docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+
+  volumes_from:
+   - sharedDataVolume
+   - websiteDataVolume
+
+  environment:
+     VIRTUAL_HOST: docker-web.local
+
+phpMachine:
+  image: myown/php
+
+  links:
+     - mariaDBServerMachine:docker-mariadb.local
+
+  volumes_from:
+   - sharedDataVolume
+   - websiteDataVolume
+
+  environment:
+     VIRTUAL_HOST: docker-php.local
+
+mariaDBServerMachine:
+  image: mariadb
+
+  volumes_from:
+   - sharedDataVolume
+
+  environment:
+     VIRTUAL_HOST: docker-mariadb.local
+     MYSQL_ROOT_PASSWORD: my-secret-pw

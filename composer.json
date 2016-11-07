@@ -1,0 +1,14 @@
+{
+    "name": "dirk/docker-project",
+    "require": {
+        "doctrine/orm": "~2.5",
+        "symfony/symfony": "~2.7",
+        "symfony/console": "~2.7"
+    },
+    "authors": [
+        {
+            "name": "dirk winkhaus",
+            "email": "dirkwinkhaus@googlemail.com"
+        }
+    ]
+}

@@ -1,50 +1,62 @@
 websiteDataVolume:
   image: myown/ubuntu
   volumes:
-    - ./src:/var/www/html
+  - ./src:/var/www/html
 
 sharedDataVolume:
   image: myown/ubuntu
   volumes:
-    - ./docker/sharedData:/sharedData/
+  - ./docker/sharedData:/sharedData/
 
 webServerMachine:
   image: myown/nginx
   ports:
-    - "8000:80"
-
+  - "8000:80"
   links:
-   - phpMachine:docker-web.local
-
+  - phpMachine:docker-web.local
   volumes:
-   - ./config/docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
-
+  - ./config/docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
   volumes_from:
-   - sharedDataVolume
-   - websiteDataVolume
-
+  - sharedDataVolume
+  - websiteDataVolume
   environment:
      VIRTUAL_HOST: docker-web.local
 
 phpMachine:
   image: myown/php
-
   links:
-     - mariaDBServerMachine:docker-mariadb.local
-
+  - mariaDBServerMachine:docker-mariadb.local
+  - rabbitMQServerMachine:docker-rabbitmq.local
+  - mongoDBServerMachine:docker-mongodb.local
   volumes_from:
-   - sharedDataVolume
-   - websiteDataVolume
-
+  - sharedDataVolume
+  - websiteDataVolume
   environment:
      VIRTUAL_HOST: docker-php.local
 
 mariaDBServerMachine:
   image: mariadb
-
   volumes_from:
-   - sharedDataVolume
-
+  - sharedDataVolume
   environment:
      VIRTUAL_HOST: docker-mariadb.local
-     MYSQL_ROOT_PASSWORD: my-secret-pw
+     MYSQL_ROOT_PASSWORD: root
+     MYSQL_DATABASE: docker_sample
+     MYSQL_USER:  docker
+     MYSQL_PASSWORD:  sample
+
+rabbitMQServerMachine:
+  image: rabbitmq:3.6.5-management
+  ports:
+  - "15672:15672"
+  volumes_from:
+  - sharedDataVolume
+  environment:
+     VIRTUAL_HOST: docker-rabbitmq.local
+
+mongoDBServerMachine:
+  image: mongo:3.0.13
+  volumes_from:
+  - sharedDataVolume
+  environment:
+     VIRTUAL_HOST: docker-mongo.local

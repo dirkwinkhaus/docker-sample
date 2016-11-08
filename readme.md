@@ -1,4 +1,6 @@
 # Docker sample
+This sample shows how to use docker compose and run 
+several self made or existing container and link them together.
 
 ## Setup
 Call the "build.sh" file in docker/images to build the 

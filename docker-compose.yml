@@ -28,6 +28,7 @@ phpMachine:
   - mariaDBServerMachine:docker-mariadb.local
   - rabbitMQServerMachine:docker-rabbitmq.local
   - mongoDBServerMachine:docker-mongodb.local
+  - redisServerMachine:docker-redis.local
   volumes_from:
   - sharedDataVolume
   - websiteDataVolume
@@ -60,3 +61,10 @@ mongoDBServerMachine:
   - sharedDataVolume
   environment:
      VIRTUAL_HOST: docker-mongo.local
+
+redisServerMachine:
+  image: redis:3.0.7
+  volumes_from:
+  - sharedDataVolume
+  environment:
+     VIRTUAL_HOST: docker-redis.local

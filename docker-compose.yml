@@ -54,6 +54,8 @@ phpMachine:
   - rabbitMQServerMachine:docker-rabbitmq.local
   - mongoDBServerMachine:docker-mongodb.local
   - redisServerMachine:docker-redis.local
+  volumes:
+  - ./config/php/php.ini:/usr/local/etc/php/php.ini
   volumes_from:
   - sharedDataVolume
   - websiteDataVolume

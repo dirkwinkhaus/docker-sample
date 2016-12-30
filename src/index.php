@@ -3,6 +3,11 @@ $pdo = new PDO('mysql:host=docker-mariadb.local', 'docker', 'sample');
 
 $statement = $pdo->prepare("show databases");
 $statement->execute();
+
+session_start();
+if (!isset($_SESSION['founded'])) {
+    $_SESSION['founded'] = $_SERVER['SERVER_ADDR'];
+}
 ?>
 <!doctype html>
 <html class="no-js" lang="en">
@@ -44,7 +49,9 @@ $statement->execute();
     </div>
     <div class="medium-4 columns">
         <strong>Answering IP:</strong><br>
-        <?= $_SERVER['SERVER_ADDR']; ?>
+        <?= $_SERVER['SERVER_ADDR']; ?><br>
+        <strong>Session started on:</strong><br>
+        <?= $_SESSION['founded']; ?>
     </div>
 </div>
 <hr>
@@ -95,4 +102,5 @@ $statement->execute();
 </html>
 
 
-
+<?php
+phpinfo();

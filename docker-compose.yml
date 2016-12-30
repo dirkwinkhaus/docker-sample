@@ -17,9 +17,6 @@ loadBalancer:
   - webServerMachine2:docker-web-2.local
   volumes:
   - ./config/nginx/loadbalancer/nginx.conf:/etc/nginx/nginx.conf
-  volumes_from:
-  - sharedDataVolume
-  - websiteDataVolume
   environment:
      VIRTUAL_HOST: docker-web.local
 

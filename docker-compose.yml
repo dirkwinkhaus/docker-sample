@@ -6,7 +6,7 @@ websiteDataVolume:
 sharedDataVolume:
   image: myown/ubuntu
   volumes:
-  - ./docker/sharedData:/sharedData/
+  - ./sharedData:/sharedData/
 
 loadBalancer:
   image: myown/nginx
@@ -16,7 +16,7 @@ loadBalancer:
   - webServerMachine1:docker-web-1.local
   - webServerMachine2:docker-web-2.local
   volumes:
-  - ./config/docker/nginx/loadbalancer/nginx.conf:/etc/nginx/nginx.conf
+  - ./config/nginx/loadbalancer/nginx.conf:/etc/nginx/nginx.conf
   volumes_from:
   - sharedDataVolume
   - websiteDataVolume
@@ -28,7 +28,7 @@ webServerMachine1:
   links:
   - phpMachine:docker-php.local
   volumes:
-  - ./config/docker/nginx/webserver/default.conf:/etc/nginx/conf.d/default.conf
+  - ./config/nginx/webserver/default.conf:/etc/nginx/conf.d/default.conf
   volumes_from:
   - sharedDataVolume
   - websiteDataVolume
@@ -40,7 +40,7 @@ webServerMachine2:
   links:
   - phpMachine:docker-php.local
   volumes:
-  - ./config/docker/nginx/webserver/default.conf:/etc/nginx/conf.d/default.conf
+  - ./config/nginx/webserver/default.conf:/etc/nginx/conf.d/default.conf
   volumes_from:
   - sharedDataVolume
   - websiteDataVolume
@@ -89,6 +89,8 @@ mongoDBServerMachine:
 
 redisServerMachine:
   image: redis:3.0.7
+  volumes:
+  - ./config/redis/redis.conf:/usr/local/etc/redis/redis.conf
   volumes_from:
   - sharedDataVolume
   environment:
